@@ -55,7 +55,7 @@ async def auto_filter(bot, update):
     max_per_page = configs["configs"]["max_per_page"] # maximum buttom per page 
     show_invite = configs["configs"]["show_invite_link"] # should or not show active chat invite link
     
-    # show_invite = (False if pm_file_chat == True else show_invite) # turn show_invite to False if pm_file_chat is True
+#     show_invite = (False if pm_file_chat == True else show_invite) # turn show_invite to False if pm_file_chat is True
     
     filters = await db.get_filters(group_id, query)
     
@@ -83,7 +83,7 @@ async def auto_filter(bot, update):
             # add emoji down below inside " " if you want..
             button_text = f"{file_size}{file_name}"
             
-            
+
             if file_type == "video":
                 if allow_video: 
                     pass
@@ -193,9 +193,8 @@ async def auto_filter(bot, update):
                 
             for x in ibuttons:
                 result[0].insert(0, x) #Insert invite link buttons at first of page
-            
-            # Free Up Memory...
-            ibuttons = None
+                
+            ibuttons = None # Free Up Memory...
             achatId = None
             
             
@@ -216,6 +215,41 @@ async def auto_filter(bot, update):
         except Exception as e:
             print(e)
 
+
+@Client.on_message(filters.command["remove"]& filters.group, group=0)
+async def remove_file(bot: Client, update: Message):
+    
+    if len (update.command) == 1:
+        await update.reply_text("Please Either Provide Unique Id or File Link From DB To Remove..!", True)
+        return
+    
+    id: str = update.command[1]
+    
+    if len(id) == 15: #Unique Id
+        
+        file, _, __, ___ = db.get_file(id)
+        if not file:
+            await update.reply_text("No such file with this id exits in db..!", True)
+            return
+        else:
+            file = 0
+
+    else: # URL
+        regex = r"https:\/\/t\.me\/c?\/?[0-9a-zA-z]{5,10}\/\d+"
+        result = re.match(regex, id)
+        if not result.groups():
+            await update.reply_text("This Is Not A Valid TG Url...!", True)
+            return
+        else:
+            result = None
+            
+    status = await db.del_filter(update.chat.id, id)
+    if status:
+        await update.reply_text("File Got Deleted Sucessfully..!", True)
+    else:
+        await update.reply_text("The File Id Is Not Assosiated With Your Chat..!", True)
+                
+    
 
 async def gen_invite_links(db, group_id, bot, update):
     """
