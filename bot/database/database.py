@@ -394,6 +394,28 @@ class Database:
         return True
 
 
+    async def del_filter(self, group_id: int, id: str):
+        """
+        A Funtion to delete all filters of a specific
+        chat and group from db
+        """
+        group_id = int(group_id)
+        
+        try:
+            result = await self.fcol.find_one_and_delete(
+                {"group_id": group_id, "$or":[{"unique_id": id}, {"file_link": id}]},
+                projection={'_id': 0, "file_name": 1}
+            )
+            if result:
+                print(result)
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(e) 
+            return False
+
+
     async def del_filters(self, group_id: int, channel_id: int):
         """
         A Funtion to delete all filters of a specific
