@@ -3,34 +3,34 @@ import string
 import asyncio
 
 from pyrogram import Client, filters
-from pyrogram.types import Message
 from pyrogram.errors import UserAlreadyParticipant, FloodWait
 
-from bot import CHAT_DETAILS
-from bot.bot import Bot 
-from bot.database import Database 
-from bot.plugins.auto_filter import recacher
-from bot.plugins.utils import admin_list
+from bot import VERIFY # pylint: disable=import-error
+from bot.bot import Bot # pylint: disable=import-error
+from bot.database import Database # pylint: disable=import-error
+from bot.plugins.auto_filter import recacher # pylint: disable=import-error
 
 db = Database()
 
 @Client.on_message(filters.command(["add"]) & filters.group, group=1)
-async def connect(bot: Bot, update: Message):
+async def connect(bot: Bot, update):
     """
     A Funtion To Handle Incoming /add Command TO COnnect A Chat With Group
     """
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
     target_chat = update.text.split(None, 1)
-    global CHAT_DETAILS
+    global VERIFY
     
-    chat_dict = CHAT_DETAILS.get(str(chat_id))
-    chat_admins = chat_dict.get("admins") if chat_dict != None else None
+    if VERIFY.get(str(chat_id)) == None: # Make Admin's ID List
+        admin_list = []
+        async for x in bot.iter_chat_members(chat_id=chat_id, filter="administrators"):
+            admin_id = x.user.id 
+            admin_list.append(admin_id)
+        admin_list.append(None)
+        VERIFY[str(chat_id)] = admin_list
 
-    if ( chat_dict or chat_admins ) == None: # Make Admin's ID List
-        chat_admins = await admin_list(chat_id, bot, update)
-
-    if user_id not in chat_admins:
+    if not user_id in VERIFY.get(str(chat_id)):
         return
     
     try:
@@ -87,7 +87,7 @@ async def connect(bot: Bot, update: Message):
         await update.reply_text("Channel Aldready In Db...!!!")
         return
     
-    wait_msg = await update.reply_text("Please Wait Till I Add All Your Files From Channel To Db\n\n<i>This May Take 2 or 3 Hrs Depending On Your No. Of Files In Channel.....</i>\n\nUntil Then Please Dont Sent Any Other Command Or This Operation May Be Intrupted....")
+    wait_msg = await update.reply_text("Please Wait Till I Add All Your Files From Channel To Db\n\n<i>This May Take 10 or 15 Mins Depending On Your No. Of Files In Channel.....</i>\n\nUntil Then Please Dont Sent Any Other Command Or This Operation May Be Intrupted....")
     
     try:
         type_list = ["video", "audio", "document"]
@@ -112,8 +112,8 @@ async def connect(bot: Bot, update: Message):
                             continue
                         file_id = file_id.video.file_id
                         file_name = msgs.video.file_name[0:-4]
-                        file_size = msgs.video.file_size
                         file_caption  = msgs.caption if msgs.caption else ""
+                        file_size = msgs.video.file_size
                         file_type = "video"
                     
                     elif msgs.audio:
@@ -127,8 +127,8 @@ async def connect(bot: Bot, update: Message):
                             continue
                         file_id = file_id.audio.file_id
                         file_name = msgs.audio.file_name[0:-4]
-                        file_size = msgs.audio.file_size
                         file_caption  = msgs.caption if msgs.caption else ""
+                        file_size = msgs.audio.file_size
                         file_type = "audio"
                     
                     elif msgs.document:
@@ -142,8 +142,8 @@ async def connect(bot: Bot, update: Message):
                             continue
                         file_id = file_id.document.file_id
                         file_name = msgs.document.file_name[0:-4]
-                        file_size = msgs.document.file_size
                         file_caption  = msgs.caption if msgs.caption else ""
+                        file_size = msgs.document.file_size
                         file_type = "document"
                     
                     for i in ["_", "|", "-", "."]: # Work Around
@@ -166,8 +166,8 @@ async def connect(bot: Bot, update: Message):
                         file_id=file_id, # Done
                         unique_id=unique_id,
                         file_name=file_name,
-                        file_size=file_size,
                         file_caption=file_caption,
+                        file_size=file_size,
                         file_type=file_type,
                         file_link=file_link,
                         chat_id=channel_id,
@@ -201,15 +201,17 @@ async def disconnect(bot: Bot, update):
     chat_id = update.chat.id
     user_id = update.from_user.id if update.from_user else None
     target_chat = update.text.split(None, 1)
-    global CHAT_DETAILS
+    global VERIFY
     
-    chat_dict = CHAT_DETAILS.get(str(chat_id))
-    chat_admins = chat_dict.get("admins") if chat_dict != None else None
+    if VERIFY.get(str(chat_id)) == None: # Make Admin's ID List
+        admin_list = []
+        async for x in bot.iter_chat_members(chat_id=chat_id, filter="administrators"):
+            admin_id = x.user.id 
+            admin_list.append(admin_id)
+        admin_list.append(None)
+        VERIFY[str(chat_id)] = admin_list
 
-    if ( chat_dict or chat_admins ) == None: # Make Admin's ID List
-        chat_admins = await admin_list(chat_id, bot, update)
-
-    if user_id not in chat_admins:
+    if not user_id in VERIFY.get(str(chat_id)):
         return
     
     try:
@@ -263,15 +265,17 @@ async def delall(bot: Bot, update):
     """
     chat_id=update.chat.id
     user_id = update.from_user.id if update.from_user else None
-    global CHAT_DETAILS
+    global VERIFY
     
-    chat_dict = CHAT_DETAILS.get(str(chat_id))
-    chat_admins = chat_dict.get("admins") if chat_dict != None else None
+    if VERIFY.get(str(chat_id)) == None: # Make Admin's ID List
+        admin_list = []
+        async for x in bot.iter_chat_members(chat_id=chat_id, filter="administrators"):
+            admin_id = x.user.id 
+            admin_list.append(admin_id)
+        admin_list.append(None)
+        VERIFY[str(chat_id)] = admin_list
 
-    if ( chat_dict or chat_admins ) == None: # Make Admin's ID List
-        chat_admins = await admin_list(chat_id, bot, update)
-
-    if user_id not in chat_admins:
+    if not user_id in VERIFY.get(str(chat_id)):
         return
     
     await db.delete_all(chat_id)
@@ -280,7 +284,7 @@ async def delall(bot: Bot, update):
     await update.reply_text("Sucessfully Deleted All Connected Chats From This Group....")
 
 
-@Client.on_message(filters.channel & (filters.video | filters.audio | filters.document), group=0)
+@Client.on_message(filters.channel & (filters.video | filters.audio | filters.document) & ~filters.edited, group=0)
 async def new_files(bot: Bot, update):
     """
     A Funtion To Handle Incoming New Files In A Channel ANd Add Them To Respective Channels..
@@ -295,23 +299,23 @@ async def new_files(bot: Bot, update):
             file_type = "video" 
             file_id = update.video.file_id
             file_name = update.video.file_name[0:-4]
-            file_size = update.video.file_size
             file_caption  = update.caption if update.caption else ""
+            file_size = update.video.file_size
 
         elif update.audio:
             file_type = "audio"
             file_id = update.audio.file_id
             file_name = update.audio.file_name[0:-4]
-            file_size = update.audio.file_size
             file_caption  = update.caption if update.caption else ""
+            file_size = update.audio.file_size
 
         elif update.document:
             file_type = "document"
             file_id = update.document.file_id
             file_name = update.document.file_name[0:-4]
-            file_size = update.document.file_size
             file_caption  = update.caption if update.caption else ""
-        
+            file_size = update.document.file_size
+
         for i in ["_", "|", "-", "."]: # Work Around
             try:
                 file_name = file_name.replace(i, " ")
@@ -340,8 +344,8 @@ async def new_files(bot: Bot, update):
                     file_id=file_id, # File Id For Future Updates Maybe...
                     unique_id=unique_id,
                     file_name=file_name,
-                    file_size=file_size,
                     file_caption=file_caption,
+                    file_size = file_size,
                     file_type=file_type,
                     file_link=file_link,
                     chat_id=channel_id,
