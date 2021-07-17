@@ -216,7 +216,7 @@ async def auto_filter(bot, update):
             print(e)
 
 
-@Client.on_message(filters.command(["remove"])& filters.group, group=0)
+@Client.on_message(filters.command(["remove"]) & filters.group, group=-1)
 async def remove_file(bot: Client, update: Message):
     
     if len (update.command) == 1:
