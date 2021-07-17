@@ -23,6 +23,8 @@ USER_SESSION = os.environ.get("USER_SESSION")
 
 CHAT_DETAILS = {}
 
+VERIFY = {}
+
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
