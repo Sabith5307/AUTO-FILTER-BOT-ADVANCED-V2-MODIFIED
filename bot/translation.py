@@ -7,10 +7,14 @@ class Translation(object):
     START_TEXT = """<b>Hey {}!!</b>
 <i>Am Just A Advance Auto Filter Bot....😉
 
-Just Add Me To Your Group And Channel And Connect Them And See My Pevers 🔥🔥😝
+(★) ༄𝐻𝑒𝑟𝑚𝑖𝑜𝑛𝑒☆𝐺𝑟𝑎𝑛𝑔𝑒𝑟࿐ (★) 
 
+ഈ ബോട്ട്🛡🎬ᴍᴏᴠɪᴇs ɴᴏᴡ🎥🛡 ഗ്രൂപ്പിലേക്ക് ഉള്ളത് എന്ന് ഇനി പ്രത്യേകിച്ച് പറയണോ??
+അപ്പോ പിന്നെ Join Our Channel 🤭     ചാനലിൽ നിങ്ങൾ ഉണ്ട് എങ്കിൽ മാത്രമേ ഈ ബോട്ട് വഴി നിങ്ങൾക്ക് error ഇല്ലാതെ സിനിമ  download ചെയ്യാൻ കഴിയൂ   .അതുകൊണ്ട് ചാനെലിൽ ജോയിൻ ആവുക...😁😁
+
+@puththanpadam_ott 
 For More Details Click Help Button Below..
-@CrazyBotsz
+@Assistant_MalayaliGamerBot 
 </i>"""    
     
     HELP_TEXT = """
@@ -43,7 +47,7 @@ For More Details Click Help Button Below..
             
             -> <code>Status</code> - Button Will Shows The Stats Of Your Channel
             
-@CrazyBotsz
+@MoviesTalkies23 
 """
     
     ABOUT_TEXT = """<b>➥ Name</b> : <code> Auto Filter Bot</code>
