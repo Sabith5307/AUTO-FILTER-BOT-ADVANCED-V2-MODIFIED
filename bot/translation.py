@@ -5,7 +5,7 @@
 class Translation(object):
     
     START_TEXT = """<b>Hey {}!!</b>
-<i>Am Just A Advance Auto Filter Bot....😉
+<i>Am A MOVIÈS NOW FILTER ASSISTANT ....😉
 
 (★) ༄𝐻𝑒𝑟𝑚𝑖𝑜𝑛𝑒☆𝐺𝑟𝑎𝑛𝑔𝑒𝑟࿐ (★) 
 
