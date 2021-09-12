@@ -24,7 +24,7 @@ async def start(bot, update):
             return
         
         caption = file_caption if file_caption != ("" or None) else ("<code>" + file_name + """</code>\n
-<b> © Powered by @MoviesTalkies23  </b>""")
+<b> ♻️  @MoviesTalkies23 \n 🎗️ʝσιи 🎗️ ѕнαяє🎗️ ѕυρρσят🎗️  </b>""")
         try:
             await update.reply_cached_media(
                 file_id,
