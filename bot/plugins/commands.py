@@ -24,7 +24,7 @@ async def start(bot, update):
             return
         
         caption = file_caption if file_caption != ("" or None) else ("<code>" + file_name + """</code>\n
-<b> ♻️  @MoviesTalkies23 \n 🎗️ʝσιи 🎗️ ѕнαяє🎗️ ѕυρρσят🎗️  </b>""")
+<b> 🥰 𝐉𝐨𝐢𝐧🍿@MoviesTalkies23🍿𝐅𝐨𝐫 𝐌𝐨𝐫𝐞 𝑀𝑜𝑣𝑖𝑒𝑠 & 𝑆𝑒𝑟𝑖𝑒𝑠 🥰  </b>""")
         try:
             await update.reply_cached_media(
                 file_id,
@@ -51,7 +51,7 @@ async def start(bot, update):
         InlineKeyboardButton('🛡CREATOR🛡', url='https://t.me/MALAYALI_DUDE'),
         InlineKeyboardButton('🛡MY HOME🛡', url ='https://t.me/MoviesTalkies23')
     ],[
-        InlineKeyboardButton('🛠Support 🛠', url='https://t.me/Assistant_MalayaliGamerBot')
+        InlineKeyboardButton('🛠Support 🛠', url='https://t.me/MNOW_CEObot')
     ],[
         InlineKeyboardButton('Help ⚙', callback_data="help")
     ]]
