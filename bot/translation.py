@@ -14,7 +14,7 @@ class Translation(object):
 
 @puththanpadam_ott 
 For More Details Click the Button Below..
-@Assistant_MalayaliGamerBot 
+@MNOW_CEObot
 </i>"""    
     
     HELP_TEXT = """
